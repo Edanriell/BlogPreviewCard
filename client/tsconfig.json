@@ -29,6 +29,9 @@
 			"@app/*": [
 				"app/*"
 			],
+			"@styles/*": [
+				"app/_styles/*"
+			],
 			"@entities/*": [
 				"entities/*"
 			],
