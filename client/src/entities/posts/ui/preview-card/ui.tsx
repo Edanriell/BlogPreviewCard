@@ -1,6 +1,8 @@
 import { FC } from "react";
 import Image from "next/image";
 
+import { Badge } from "@shared/ui";
+
 import authorImageDesktop from "./assets/post-author-image-mobile.jpg";
 import cardImage from "./assets/blogimage.svg";
 
@@ -21,13 +23,7 @@ export const PreviewCard: FC = () => {
 					src={cardImage.src}
 					alt={"HTML & CSS foundations post illustration"}
 				/>
-				<p
-					className={
-						"rounded-[0.4rem] px-[1.2rem] py-[0.4rem] bg-dandelion-300 font-figtree font-extrabold text-[1.2rem] md:text-[1.4rem] text-codGray-950 text-left inline"
-					}
-				>
-					Learning
-				</p>
+				<Badge>Learning</Badge>
 				<p
 					className={
 						"mt-[1.2rem] font-figtree font-medium text-[1.2rem] md:text-[1.4rem] text-codGray-950"
