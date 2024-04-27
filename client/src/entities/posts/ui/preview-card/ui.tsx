@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Image from "next/image";
 
-import { Badge } from "@shared/ui";
+import { Badge, Link } from "@shared/ui";
 
 import authorImageDesktop from "./assets/post-author-image-mobile.jpg";
 import cardImage from "./assets/blogimage.svg";
@@ -32,14 +32,8 @@ export const PreviewCard: FC = () => {
 					Published <time dateTime="2023-12-21">21 Dec 2023</time>
 				</p>
 			</header>
-			<h2
-				className={
-					"font-figtree font-extrabold text-[2rem] md:text-[2.4rem] text-codGray-950 mb-[1.2rem]"
-				}
-			>
-				<a className={"block"} href={"#"}>
-					HTML & CSS foundations
-				</a>
+			<h2 className={"font-figtree font-extrabold text-[2rem] md:text-[2.4rem] mb-[1.2rem]"}>
+				<Link href={"#"}>HTML & CSS foundations</Link>
 			</h2>
 			<p
 				className={
