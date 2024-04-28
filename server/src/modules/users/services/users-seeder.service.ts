@@ -1,68 +1,45 @@
-import {join} from "path";
+import { join } from "path";
 import * as fs from "fs";
-import * as mongoose from "mongoose";
-import {Model} from "mongoose";
-import {Injectable} from "@nestjs/common";
-import {ConfigService} from "@nestjs/config";
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { Post } from "@prisma/client";
 
-import {User} from "../models";
-import {LoggerService} from "../../logger/services";
-import {UserSchema} from "../schemas";
+import { PrismaService } from "../../prisma/prisma.service";
+import { LoggerService } from "../../logger/services";
+import { User } from "../models";
 
 @Injectable()
 export class UsersSeederService {
 	private static readonly logger = new LoggerService(UsersSeederService.name);
-	private static userModel: Model<User>;
+	private static readonly prisma: PrismaService = new PrismaService();
 
-	private static async establishDatabaseConnection() {
-		const mongoUri = new ConfigService().get<string>("DB_URL");
+	private static async createUser(userData: User): Promise<void> {
+		const { email, image, name, surname, posts } = userData;
 
-		await mongoose.connect(mongoUri);
-		UsersSeederService.userModel = mongoose.model<User>("Users", UserSchema);
-	}
-
-	private static async createUsersInDatabase({
-		images,
-		fullName,
-		location,
-		userInfo,
-		socialLinks
-	}: {
-		images: {
-			mobile: string;
-			tablet: string;
-			desktop: string;
-		};
-		fullName: string;
-		location: string;
-		userInfo: string;
-		socialLinks: Array<{
-			linkText: string;
-			linkHref: string;
-		}>;
-	}) {
-		const user = await this.userModel.findOne({ fullName });
-
-		if (user) {
-			this.logger.warn(
-				`User with full name ${fullName} already exists in the database.`,
-				UsersSeederService.name
-			);
-			return;
-		}
-
-		await this.userModel.create({
-			images,
-			fullName,
-			location,
-			userInfo,
-			socialLinks
+		const user = await UsersSeederService.prisma.user.create({
+			data: {
+				email,
+				image,
+				name,
+				surname,
+				posts: {
+					create: (posts as unknown as Post[]).map((postData) => ({
+						...postData
+					}))
+				}
+			}
 		});
+
+		this.logger.log(
+			`User created: ${user.name + " " + user.surname} successfully`,
+			UsersSeederService.name
+		);
 	}
 
-	public static async seedUsersData() {
+	public static async seedUsersData(): Promise<void> {
 		const mode = new ConfigService().get<string>("NODE_ENV");
 		let rootFolderPath: string;
+
 		if (mode === "development") {
 			rootFolderPath = join(__dirname, "..\\..\\..\\..\\src");
 		} else {
@@ -70,13 +47,11 @@ export class UsersSeederService {
 		}
 		const usersDataFilePath = `${rootFolderPath}\\data\\users.json`;
 
-		await UsersSeederService.establishDatabaseConnection();
+		const usersInitialized = await UsersSeederService.prisma.user.findMany();
 
-		const usersInitialized = await this.userModel.find();
-
-		fs.readFile(usersDataFilePath, "utf8", (error, users) => {
+		fs.readFile(usersDataFilePath, "utf8", async (error, users) => {
 			if (error) {
-				this.logger.error(`Could not read the users data: ${error}`, UsersSeederService.name);
+				this.logger.error(`Could not read users data: ${error}`, UsersSeederService.name);
 				throw new Error("Unexpected error occurred. Could not read the necessary data for users.");
 			}
 
@@ -95,26 +70,20 @@ export class UsersSeederService {
 					return;
 				}
 
-				for (const user of usersData) {
-					UsersSeederService.createUsersInDatabase({
-						images: user.images,
-						fullName: user.fullName,
-						location: user.location,
-						userInfo: user.userInfo,
-						socialLinks: user.socialLinks
-					});
+				for (const userData of usersData) {
+					await UsersSeederService.createUser(userData);
 				}
 
 				this.logger.log(
-					`Successfully created ${usersData.length} recipes in the database.`,
+					`Successfully created ${usersData.length} users in database.`,
 					UsersSeederService.name
 				);
 			} catch (error) {
 				this.logger.error(
-					`An error occurred while parsing JSON data: ${error}`,
+					`An error occurred while parsing users json data: ${error}`,
 					UsersSeederService.name
 				);
-				throw new Error("Failed to parse JSON data.");
+				throw new Error("Failed to parse users json data.");
 			}
 		});
 	}

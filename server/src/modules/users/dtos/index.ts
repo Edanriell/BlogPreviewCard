@@ -1,2 +1,1 @@
-export * from "./get-user.query.dto";
-export * from "./user.dto";
+export * from "./get-user-query-response.dto";
