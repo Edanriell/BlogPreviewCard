@@ -1,5 +1,5 @@
 export const getPostQuery = async () => {
-	const response = await fetch( "api/posts", {
+	const response = await fetch("http://localhost:3020/api/post", {
 		method: "Get"
 	});
 

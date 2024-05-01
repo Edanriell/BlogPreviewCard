@@ -1,12 +1,16 @@
 import { FC } from "react";
 import Image from "next/image";
 
+import { getPostQuery } from "@entities/posts";
 import { Badge, Link } from "@shared/ui";
 
 import authorImageDesktop from "./assets/post-author-image-mobile.jpg";
 import cardImage from "./assets/blogimage.svg";
 
-export const PreviewCard: FC = () => {
+export const PreviewCard: FC = async () => {
+	const postData = await getPostQuery();
+	console.log(postData);
+
 	return (
 		<article
 			className={

@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
 import { RouterModule } from "@nestjs/core";
 
-import { UsersModule } from "../modules";
+import { PostsModule } from "../modules";
 
 @Module({
 	imports: [
-		UsersModule,
+		PostsModule,
 		RouterModule.register([
 			{
 				path: "",
-				children: [UsersModule]
+				children: [PostsModule]
 			}
 		])
 	]
