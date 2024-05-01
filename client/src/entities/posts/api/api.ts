@@ -1,5 +1,7 @@
+import * as process from "node:process";
+
 export const getPostQuery = async () => {
-	const response = await fetch("http://localhost:3020/api/post", {
+	const response = await fetch(`${process.env.API_URL}api/post`, {
 		method: "Get"
 	});
 

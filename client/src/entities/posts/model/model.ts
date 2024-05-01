@@ -1,21 +1,22 @@
 export type Post = {
-	images: {
-		mobile: string;
-		tablet: string;
-		desktop: string;
-	};
-	categories: Array<string>;
-	date: string;
+	id?: number;
+	image?: string | null;
+	tags: string[];
 	title: string;
 	description: string;
-	author: Author;
-}
+	content?: string | null;
+	publishDate: string;
+	link: string;
+	published?: boolean | null;
+	author?: Author | null;
+	authorId?: number | null;
+};
 
 type Author = {
+	id?: number;
+	email: string;
+	image?: string | null;
 	name: string;
-	images: {
-		mobile: string;
-		tablet: string;
-		desktop: string;
-	};
-}
+	surname: string;
+	posts?: Post[] | null;
+};

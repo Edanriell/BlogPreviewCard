@@ -50,6 +50,9 @@
 			"@shared/ui/*": [
 				"shared/ui/*"
 			],
+			"@shared/lib/*": [
+				"shared/lib/*"
+			],
 			"@widgets/*": [
 				"widgets/*"
 			],
