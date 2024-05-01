@@ -1,12 +1,13 @@
 import { FC } from "react";
 import Image from "next/image";
 
+import { getPostQuery, Post } from "@entities/posts";
 import { Badge, Link } from "@shared/ui";
+import { reformatDate } from "@shared/lib/functions";
 
-import authorImageDesktop from "./assets/post-author-image-mobile.jpg";
-import cardImage from "./assets/blogimage.svg";
+export const PreviewCard: FC = async () => {
+	const postData: Post = await getPostQuery();
 
-export const PreviewCard: FC = () => {
 	return (
 		<article
 			className={
@@ -20,28 +21,32 @@ export const PreviewCard: FC = () => {
 					}
 					width={336}
 					height={201}
-					src={cardImage.src}
+					src={postData.image!}
 					alt={"HTML & CSS foundations post illustration"}
 				/>
-				<Badge>Learning</Badge>
+				<div className={"flex flex-row gap-x-[1rem] flex-wrap"}>
+					{postData.tags.map((tag, index) => {
+						return <Badge key={index}>{tag}</Badge>;
+					})}
+				</div>
 				<p
 					className={
 						"mt-[1.2rem] font-figtree font-medium text-[1.2rem] md:text-[1.4rem] text-codGray-950"
 					}
 				>
-					Published <time dateTime="2023-12-21">21 Dec 2023</time>
+					Published{" "}
+					<time dateTime={postData.publishDate}>{reformatDate(postData.publishDate)}</time>
 				</p>
 			</header>
 			<h2 className={"font-figtree font-extrabold text-[2rem] md:text-[2.4rem] mb-[1.2rem]"}>
-				<Link href={"#"}>HTML & CSS foundations</Link>
+				<Link href={postData.link}>{postData.title}</Link>
 			</h2>
 			<p
 				className={
 					"font-figtree font-medium text-[1.4rem] md:text-[1.6rem] text-gray-400 text-left"
 				}
 			>
-				These languages are the backbone of every website, defining structure, content, and
-				presentation.
+				{postData.description}
 			</p>
 			<footer className={"mt-[2.4rem]"}>
 				<figure className={"flex flex-row items-center justify-start gap-x-[1.2rem]"}>
@@ -49,11 +54,11 @@ export const PreviewCard: FC = () => {
 						className={"rounded-full w-[3.2rem] h-[3.2rem] object-cover"}
 						width={32}
 						height={32}
-						src={authorImageDesktop.src}
-						alt={"Image of post author Greg Hooper"}
+						src={postData.author?.image!}
+						alt={`Image of post author ${postData.author?.name} ${postData.author?.surname}`}
 					/>
 					<figcaption className={"font-figtree font-extrabold text-[1.4rem] text-codGray-950"}>
-						Greg Hooper
+						{postData.author?.name + " " + postData.author?.surname}
 					</figcaption>
 				</figure>
 			</footer>

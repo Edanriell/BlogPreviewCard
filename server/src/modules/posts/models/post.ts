@@ -1,3 +1,5 @@
+import { User } from "../../users/models";
+
 export type Post = {
 	id?: number;
 	image?: string | null;
@@ -5,18 +7,8 @@ export type Post = {
 	title: string;
 	description: string;
 	content?: string | null;
-	publishDate: string;
-	link: string;
+	publishDate: Date;
 	published?: boolean | null;
-	author?: Author | null;
+	author?: User | null;
 	authorId?: number | null;
-};
-
-type Author = {
-	id?: number;
-	email: string;
-	image?: string | null;
-	name: string;
-	surname: string;
-	posts?: Post[] | null;
 };
