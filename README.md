@@ -1,3 +1,3 @@
 # BlogPreviewCard
 
-![BlogPreviewCard](https://github.com/Edanriell/SocialLinksProfile/blob/develop/social-links-profile.png?raw=true)
+![BlogPreviewCard](https://github.com/Edanriell/BlogPreviewCard/blob/develop/image.png?raw=true)
