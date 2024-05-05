@@ -1,7 +1,9 @@
 {
 	"name": "client",
-	"version": "0.1.0",
+	"version": "1.0.0",
+	"author": "Edanriell",
 	"private": true,
+	"license": "MIT",
 	"scripts": {
 		"start:dev": "next dev",
 		"start:build": "next build",
