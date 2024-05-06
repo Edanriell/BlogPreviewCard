@@ -1,5 +1,5 @@
-import { ReactNode, FC } from "react";
 import type { Metadata } from "next";
+import { ReactNode, FC } from "react";
 
 import { BaseLayout } from "@/widgets";
 

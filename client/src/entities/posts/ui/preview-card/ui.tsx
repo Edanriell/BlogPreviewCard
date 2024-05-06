@@ -1,9 +1,9 @@
-import { FC } from "react";
 import Image from "next/image";
+import { FC } from "react";
 
 import { getPostQuery, Post } from "@entities/posts";
-import { Badge, Link } from "@shared/ui";
 import { reformatDate } from "@shared/lib/functions";
+import { Badge, Link } from "@shared/ui";
 
 export const PreviewCard: FC = async () => {
 	const postData: Post = await getPostQuery();

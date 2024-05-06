@@ -1,8 +1,8 @@
 "use client";
 
-import { FC, ReactNode, useRef } from "react";
-import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { FC, ReactNode, useRef } from "react";
 
 gsap.registerPlugin(useGSAP);
 
@@ -41,7 +41,7 @@ export const Link: FC<LinkProps> = ({
 	const handleLinkTouchEnd = contextSafe(() => {
 		gsap.to(linkRef.current, { color: color, ease: "power2.out", duration: 0.5 });
 	});
-	
+
 	return (
 		<a
 			ref={linkRef}
